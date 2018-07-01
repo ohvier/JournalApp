@@ -24,4 +24,7 @@ public interface DairyDao {
     @Delete
     void deleteEntry(DairyEntry dairyEntry);
 
+    @Query("SELECT * FROM dairy where id=:id")
+    DairyEntry loadEntryById(int id);
+
 }

@@ -63,16 +63,20 @@ public class DairyEntryAdapter extends RecyclerView.Adapter<DairyEntryAdapter.My
         return mDairyEntry.size();
     }
 
-    public void setTasks(List<DairyEntry> dairyEntries) {
+    public void setEntries(List<DairyEntry> dairyEntries) {
         mDairyEntry = dairyEntries;
         notifyDataSetChanged();
+    }
+
+    public List<DairyEntry> getEntries() {
+        return mDairyEntry;
     }
 
     public interface ItemClickListener {
         void onItemClickListener(int itemId);
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder {
+    class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         TextView dairy_entry_title;
         TextView dairy_entry_date;
@@ -83,6 +87,7 @@ public class DairyEntryAdapter extends RecyclerView.Adapter<DairyEntryAdapter.My
             dairy_entry_title = itemView.findViewById(R.id.dairy_title);
             dairy_entry_date = itemView.findViewById(R.id.dairy_date);
 //            dairy_entry_body = itemView.findViewById(R.id.dairy_body);
+            itemView.setOnClickListener(this);
         }
 
         void setEntry(DairyEntry entry) {
@@ -93,8 +98,8 @@ public class DairyEntryAdapter extends RecyclerView.Adapter<DairyEntryAdapter.My
 
 
         public void onClick(View view) {
-            int element = mDairyEntry.get(getAdapterPosition()).getId();
-            mItemClickListener.onItemClickListener(element);
+            int elementId = mDairyEntry.get(getAdapterPosition()).getId();
+            mItemClickListener.onItemClickListener(elementId);
         }
 
 

@@ -1,5 +1,6 @@
 package com.example.otuyishime.journalapp;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -32,6 +33,39 @@ public class AddDairyEntryActivity extends AppCompatActivity {
         mDb = AppDatabase.getInstance(getApplicationContext());
         initViews();
 
+        mDb = AppDatabase.getInstance(getApplicationContext());
+        if (savedInstanceState != null && savedInstanceState.containsKey(INSTANCE_DAIRY_ID)) {
+            mEntryId = savedInstanceState.getInt(INSTANCE_DAIRY_ID, DEFAULT_ENTRY_ID);
+
+        }
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra(EXTRA_DAIRY_ID)) {
+            saveButton.setText(R.string.update_button);
+            if (mEntryId == DEFAULT_ENTRY_ID) {
+                mEntryId = intent.getIntExtra(EXTRA_DAIRY_ID, DEFAULT_ENTRY_ID);
+                AppExecutors.getsInstance().diskIO().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        final DairyEntry entry = mDb.dairyDao().loadEntryById(mEntryId);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                populateUI(entry);
+                            }
+                        });
+                    }
+                });
+            }
+        }
+
+    }
+
+    private void populateUI(DairyEntry entry) {
+        if (entry == null) {
+            return;
+        }
+        titleEditText.setText(entry.getEntry_title());
+        descriptionEditText.setText(entry.getEntry_body());
     }
 
     private void initViews() {
@@ -56,7 +90,13 @@ public class AddDairyEntryActivity extends AppCompatActivity {
         AppExecutors.getsInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                mDb.dairyDao().insertEntry(entry);
+                if (mEntryId==DEFAULT_ENTRY_ID){
+
+                    mDb.dairyDao().insertEntry(entry);
+                }else {
+                    entry.setId(mEntryId);
+                    mDb.dairyDao().updateEntry(entry);
+                }
                 finish();
             }
         });
