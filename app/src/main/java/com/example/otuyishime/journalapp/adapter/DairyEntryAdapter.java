@@ -20,11 +20,11 @@ import java.util.Locale;
 public class DairyEntryAdapter extends RecyclerView.Adapter<DairyEntryAdapter.MyViewHolder> {
     private static final String DATE_FORMAT = "yyy-MM-dd";
     private List<DairyEntry> mDairyEntry;
-    private LayoutInflater mInflater;
 
     private Context mContext;
 
     final private ItemClickListener mItemClickListener;
+    final private ItemLongClickListener mItemLongClickListener;
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
 
@@ -35,9 +35,11 @@ public class DairyEntryAdapter extends RecyclerView.Adapter<DairyEntryAdapter.My
 //        mItemClickListener = null;
 //    }
 
-    public DairyEntryAdapter(Context context, ItemClickListener listener) {
+    public DairyEntryAdapter(Context context, ItemClickListener listener,ItemLongClickListener itemLongClickListener) {
         mContext = context;
         mItemClickListener = listener;
+        mItemLongClickListener=itemLongClickListener;
+
     }
 
     @NonNull
@@ -76,7 +78,11 @@ public class DairyEntryAdapter extends RecyclerView.Adapter<DairyEntryAdapter.My
         void onItemClickListener(int itemId);
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public interface ItemLongClickListener{
+        void onItemLongClickListener(int itemId);
+    }
+
+    class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,View.OnLongClickListener{
 
         TextView dairy_entry_title;
         TextView dairy_entry_date;
@@ -88,6 +94,7 @@ public class DairyEntryAdapter extends RecyclerView.Adapter<DairyEntryAdapter.My
             dairy_entry_date = itemView.findViewById(R.id.dairy_date);
 //            dairy_entry_body = itemView.findViewById(R.id.dairy_body);
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
         }
 
         void setEntry(DairyEntry entry) {
@@ -103,5 +110,10 @@ public class DairyEntryAdapter extends RecyclerView.Adapter<DairyEntryAdapter.My
         }
 
 
+        public boolean onLongClick(View view) {
+            int elementId=mDairyEntry.get(getAdapterPosition()).getId();
+            mItemLongClickListener.onItemLongClickListener(elementId);
+            return true;
+        }
     }
 }

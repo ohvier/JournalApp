@@ -19,7 +19,7 @@ import java.util.List;
 
 import static android.support.v7.widget.DividerItemDecoration.VERTICAL;
 
-public class DairyActivity extends AppCompatActivity implements DairyEntryAdapter.ItemClickListener {
+public class DairyActivity extends AppCompatActivity implements DairyEntryAdapter.ItemClickListener, DairyEntryAdapter.ItemLongClickListener {
     private RecyclerView mEntryList;
 
     private DairyEntryAdapter mAdapter;
@@ -32,7 +32,7 @@ public class DairyActivity extends AppCompatActivity implements DairyEntryAdapte
         setContentView(R.layout.activity_dairy);
         Toolbar toolbar = findViewById(R.id.toolbar);
 
-        mAdapter = new DairyEntryAdapter(this, this);
+        mAdapter = new DairyEntryAdapter(this, this, this);
         mDb = AppDatabase.getInstance(getApplicationContext());
         mEntryList = findViewById(R.id.dairy_recycler);
         mEntryList.setAdapter(mAdapter);
@@ -108,9 +108,18 @@ public class DairyActivity extends AppCompatActivity implements DairyEntryAdapte
 
     @Override
     public void onItemClickListener(int itemId) {
-        Intent intent = new Intent(DairyActivity.this, AddDairyEntryActivity.class);
+
+        Intent intent = new Intent(DairyActivity.this, ViewSingleDairyActivity.class);
         intent.putExtra(AddDairyEntryActivity.EXTRA_DAIRY_ID, itemId);
         startActivity(intent);
 
+    }
+
+    @Override
+    public void onItemLongClickListener(int itemId) {
+
+        Intent intent = new Intent(DairyActivity.this, AddDairyEntryActivity.class);
+        intent.putExtra(AddDairyEntryActivity.EXTRA_DAIRY_ID, itemId);
+        startActivity(intent);
     }
 }

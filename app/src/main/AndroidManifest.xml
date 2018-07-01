@@ -22,7 +22,8 @@
             android:name=".DairyActivity"
             android:label="@string/title_activity_dairy"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".AddDairyEntryActivity"></activity>
+        <activity android:name=".AddDairyEntryActivity" />
+        <activity android:name=".ViewSingleDairyActivity"></activity>
     </application>
 
 </manifest>
