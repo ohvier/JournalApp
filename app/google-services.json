@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1083718449666",
+    "firebase_url": "https://challenge-f92b5.firebaseio.com",
+    "project_id": "challenge-f92b5",
+    "storage_bucket": "challenge-f92b5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1083718449666:android:28aefeeee925257b",
+        "android_client_info": {
+          "package_name": "com.example.otuyishime.journalapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1083718449666-jls0n9aphccjiam1m5q9occ6f9vdln86.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.otuyishime.journalapp",
+            "certificate_hash": "ebbf1e6a9ea2927b1a4f885761d71651fdec83a3"
+          }
+        },
+        {
+          "client_id": "1083718449666-ncuc4g3k6ca5kcrphidtqgfls3up0lrf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSpe_OTpipdhEUy_71W-_M25EaRGPxmDo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1083718449666-ncuc4g3k6ca5kcrphidtqgfls3up0lrf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

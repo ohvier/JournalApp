@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Journal App</string>
+    <string name="entry_name">Entry Name</string>
+    <string name="entry_body">Entry Body</string>
+    <string name="entry_date">Entry Date</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="password">Password</string>
+    <string name="edit_entry">Edit Entry</string>
+    <string name="username">Username</string>
+    <string name="add_button">Create Entry</string>
+    <string name="title_activity_dairy">DairyActivity</string>
+</resources>
