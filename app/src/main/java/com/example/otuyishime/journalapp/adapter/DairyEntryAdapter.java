@@ -22,23 +22,31 @@ public class DairyEntryAdapter extends RecyclerView.Adapter<DairyEntryAdapter.My
     private List<DairyEntry> mDairyEntry;
     private LayoutInflater mInflater;
 
+    private Context mContext;
+
+    final private ItemClickListener mItemClickListener;
+
     private SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
 
 
-    public DairyEntryAdapter(Context context, List<DairyEntry> dairy) {
-        this.mDairyEntry = dairy;
-        this.mInflater = LayoutInflater.from(context);
+//    public DairyEntryAdapter(Context context, List<DairyEntry> dairy) {
+//        this.mDairyEntry = dairy;
+//        this.mInflater = LayoutInflater.from(context);
+//        mItemClickListener = null;
+//    }
+
+    public DairyEntryAdapter(Context context, ItemClickListener listener) {
+        mContext = context;
+        mItemClickListener = listener;
     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        boolean shouldAttachToParentImmediately = false;
-        View view = mInflater.inflate(R.layout.diary_item, parent, shouldAttachToParentImmediately);
-        MyViewHolder viewHolder = new MyViewHolder(view);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.diary_item, parent, false);
 
-        return viewHolder;
+        return new MyViewHolder(view);
     }
 
     @Override
@@ -49,7 +57,19 @@ public class DairyEntryAdapter extends RecyclerView.Adapter<DairyEntryAdapter.My
 
     @Override
     public int getItemCount() {
+        if (mDairyEntry == null) {
+            return 0;
+        }
         return mDairyEntry.size();
+    }
+
+    public void setTasks(List<DairyEntry> dairyEntries) {
+        mDairyEntry = dairyEntries;
+        notifyDataSetChanged();
+    }
+
+    public interface ItemClickListener {
+        void onItemClickListener(int itemId);
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
@@ -70,5 +90,13 @@ public class DairyEntryAdapter extends RecyclerView.Adapter<DairyEntryAdapter.My
             this.dairy_entry_date.setText(dateFormat.format(entry.getEntry_date()));
 //            this.dairy_entry_body.setText(entry.getEntry_body());
         }
+
+
+        public void onClick(View view) {
+            int element = mDairyEntry.get(getAdapterPosition()).getId();
+            mItemClickListener.onItemClickListener(element);
+        }
+
+
     }
 }

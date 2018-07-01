@@ -16,10 +16,14 @@ import com.example.otuyishime.journalapp.adapter.DairyEntryAdapter;
 import com.example.otuyishime.journalapp.model.AppDatabase;
 import com.example.otuyishime.journalapp.model.DairyEntry;
 
+import java.util.List;
+
 import static android.support.v7.widget.DividerItemDecoration.VERTICAL;
 
-public class DairyActivity extends AppCompatActivity {
+public class DairyActivity extends AppCompatActivity implements DairyEntryAdapter.ItemClickListener {
     private RecyclerView mEntryList;
+
+    private DairyEntryAdapter mAdapter;
 
     private AppDatabase mDb;
 
@@ -27,12 +31,28 @@ public class DairyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dairy);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        DairyEntryAdapter mAdapter = new DairyEntryAdapter(this, DairyEntry.getDairyList());
+        Toolbar toolbar =  findViewById(R.id.toolbar);
+
+        mAdapter= new DairyEntryAdapter(this,this);
         mDb = AppDatabase.getInstance(getApplicationContext());
         mEntryList = findViewById(R.id.dairy_recycler);
-//        mEntryList.setAdapter(mAdapter);
-        mEntryList.setAdapter(new DairyEntryAdapter(this, mDb.dairyDao().loadAllDairyEntries()));
+        mEntryList.setAdapter(mAdapter);
+
+        AppExecutors.getsInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+
+                final List<DairyEntry> entries= mDb.dairyDao().loadAllDairyEntries();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mAdapter.setTasks(entries);
+                    }
+                });
+            }
+
+        });
+
 
         DividerItemDecoration decoration = new DividerItemDecoration(getApplicationContext(), VERTICAL);
         mEntryList.addItemDecoration(decoration);
@@ -56,4 +76,8 @@ public class DairyActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onItemClickListener(int itemId) {
+
+    }
 }

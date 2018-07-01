@@ -29,7 +29,7 @@ public class AddDairyEntryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_dairy_entry);
-        mDb= AppDatabase.getInstance(getApplicationContext());
+        mDb = AppDatabase.getInstance(getApplicationContext());
         initViews();
 
     }
@@ -51,10 +51,16 @@ public class AddDairyEntryActivity extends AppCompatActivity {
         String title = titleEditText.getText().toString();
         String description = descriptionEditText.getText().toString();
         Date date = new Date();
+        final DairyEntry entry = new DairyEntry(title, date, description);
 
-        DairyEntry entry = new DairyEntry(title, date, description);
+        AppExecutors.getsInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                mDb.dairyDao().insertEntry(entry);
+                finish();
+            }
+        });
 
-        mDb.dairyDao().insertEntry(entry);
-        finish();
+
     }
 }
